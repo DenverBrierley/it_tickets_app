@@ -126,3 +126,45 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'ticket_list' # After login, go to ticket list
 LOGOUT_REDIRECT_URL = 'home'       # After logout, go to home page
 LOGIN_URL = 'login'                # URL name for the login page
+
+# LOGGING CONFIGURATION
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'file': {
+            'level': 'WARNING', # Log WARNING, ERROR, and CRITICAL messages to a file
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'app.log'), # Path to log file
+            'maxBytes': 1024 * 1024 * 5,  # 5 MB
+            'backupCount': 2,
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO', # Capture Django's own logs
+            'propagate': True,
+        },
+        'tickets': { # Logger for your 'tickets' app
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG', # Capture all log levels for your app
+            'propagate': True,
+        },
+    },
+}

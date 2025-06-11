@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -6,6 +7,9 @@ from django.contrib import messages
 from .models import Tickets, Comment
 from .forms import TicketForm, CustomUserCreationForm, CommentForm
 from django.http import HttpResponseForbidden
+
+# define the logger for error logging
+logger = logging.getLogger(__name__)
 
 # Function to check if user is an admin
 def is_admin(user):
@@ -29,6 +33,8 @@ def register_view(request):
             return redirect('home')
         # If the form is invalid then it will reject the registration
         else:
+            # Log failed registration due to invalid form
+            logger.warning("Registration form was invalid.")
             messages.error(request, 'Registration unsuccessful. Please correct the errors below.')
     else:
         form = CustomUserCreationForm()
@@ -51,6 +57,8 @@ def login_view(request):
                 return redirect('ticket_list')
             # Provides error message for incorrect details
             else:
+                # Log failed login attempt
+                logger.warning(f"Invalid login attempt for username: '{username}'.")
                 messages.error(request,"Invalid username or password.")
         else:
             messages.error(request,"Invalid username or password.")
@@ -96,7 +104,8 @@ def ticket_detail_view(request, ticket_id):
             #Redirects back to the ticket page
             return redirect('ticket_detail', ticket_id=ticket.ticket_id)
         else:
-            # comment error message
+            # comment error message and log
+            logger.warning(f"Invalid comment form by '{request.user.username}' on ticket id={ticket_id}.")
             messages.error(request, 'There was an error submitting your comment.')
     else:
         comment_form = CommentForm()
@@ -123,7 +132,8 @@ def ticket_create_view(request):
             # Redirects to the newly created ticket
             return redirect('ticket_detail', ticket_id=ticket.ticket_id)
         else:
-            # Error message
+            # Error message and log
+            logger.warning(f"User '{request.user.username}' failed to create a ticket due to invalid form.")
             messages.error(request, 'Please correct the errors below.')
     else:
         form = TicketForm()
@@ -143,6 +153,8 @@ def ticket_update_view(request, ticket_id):
             messages.success(request, 'Ticket updated successfully!')
             return redirect('ticket_detail', ticket_id=ticket.ticket_id)
         else:
+            # error message and log
+            logger.warning(f"Invalid form submission by '{request.user.username}' for ticket update id={ticket_id}.")
             messages.error(request, 'Please correct the errors below.')
     else:
         # Populate the form with the existing ticket instance data
@@ -166,4 +178,5 @@ def ticket_delete_view(request, ticket_id):
 @login_required
 # Renders page for forbidden request
 def forbidden_view(request):
+    logger.warning(f"User '{request.user.username}' was denied access and redirected to forbidden page.") # logs error
     return render(request, 'tickets/forbidden.html')
