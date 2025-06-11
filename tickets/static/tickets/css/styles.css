@@ -1,0 +1,319 @@
+:root {
+    /* Primary and Secondary Fonts*/
+    --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-secondary: 'Roboto', sans-serif;
+
+    /* Creating a colour palette to use in styling*/
+    --color-bg-main: #f4f6f8;
+    --color-bg-sidebar: #2c3e50;
+    --color-bg-header: #ffffff;
+    --color-bg-content: #ffffff;
+    --color-bg-footer: #e9ecef;
+
+    --color-text-light: #f8f9fa;
+    --color-text-dark: #343a40;
+    --color-text-muted: #6c757d;
+    --color-text-sidebar: #bdc3c7;
+    --color-text-sidebar-active: #ffffff;
+    --color-text-sidebar-hover: #ffffff;
+
+    --color-primary-accent: #28a745;
+    --color-primary-accent-dark: #218838;
+    --color-secondary-accent: #1abc9c;
+
+    --color-border: #dee2e6;
+    --color-shadow: rgba(0, 0, 0, 0.1);
+
+    /* Standard layout dimensions */
+    --sidebar-width: 260px;
+    --header-height: 60px;
+    --border-radius: 4px;
+}
+
+/* Styles for browser consistency */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* fonts and background colours */
+html, body {
+    height: 100%;
+    font-family: var(--font-primary);
+    background-color: var(--color-bg-main);
+    color: var(--color-text-dark);
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Link styles */
+a {
+    color: var(--color-primary-accent);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+a:hover {
+    color: var(--color-primary-accent-dark);
+}
+
+/* Heading styles */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-secondary);
+    color: var(--color-text-dark);
+    margin-bottom: 0.75em;
+    font-weight: 500;
+}
+h1 { font-size: 2rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.5rem; }
+
+.app-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Fixed sidebar*/
+.app-sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--color-bg-sidebar);
+    color: var(--color-text-light);
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    transition: width 0.3s ease;
+    z-index: 1000;
+}
+
+/* Sidebar Header */
+.sidebar-header {
+    padding: 0 20px 20px 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.sidebar-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-text-light);
+    text-align: center;
+}
+.sidebar-logo a {
+    color: inherit;
+}
+.sidebar-logo a:hover {
+    color: var(--color-secondary-accent);
+}
+
+
+/* Link styling in the sidebar */
+.sidebar-nav ul {
+    list-style: none;
+}
+.sidebar-nav li a {
+    display: block;
+    padding: 12px 20px;
+    color: var(--color-text-sidebar);
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border-left: 3px solid transparent;
+}
+.sidebar-nav li a:hover {
+    background-color: rgba(255,255,255,0.05);
+    color: var(--color-text-sidebar-hover);
+    border-left-color: var(--color-secondary-accent);
+}
+.sidebar-nav li a.active {
+    background-color: var(--color-primary-accent);
+    color: var(--color-text-sidebar-active);
+    font-weight: 500;
+    border-left-color: var(--color-secondary-accent);
+}
+.sidebar-nav li.nav-separator {
+    height: 1px;
+    background-color: rgba(255,255,255,0.1);
+    margin: 15px 20px;
+}
+
+
+.app-main-content {
+    margin-left: var(--sidebar-width);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.3s ease;
+}
+
+/* Header */
+.app-header {
+    height: var(--header-height);
+    background-color: var(--color-bg-header);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 30px;
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 1px 3px var(--color-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 900;
+}
+
+/* User display*/
+.header-user-info {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+.header-user-info strong {
+    color: var(--color-text-dark);
+}
+.header-user-info a {
+    margin-left: 15px;
+    color: var(--color-primary-accent);
+    font-weight: 500;
+}
+.header-user-info a:hover {
+    color: var(--color-primary-accent-dark);
+}
+
+
+/* Container for the page-specific content */
+.page-content {
+    padding: 30px;
+    flex-grow: 1;
+    background-color: var(--color-bg-content);
+}
+.page-title {
+    margin-bottom: 25px;
+    color: var(--color-text-dark);
+    font-weight: 600;
+}
+
+/* Footer */
+.app-footer {
+    padding: 15px 30px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    background-color: var(--color-bg-footer);
+    border-top: 1px solid var(--color-border);
+}
+
+/* Styling for messages framework */
+.messages-container {
+    margin-bottom: 20px;
+}
+.alert {
+    padding: 12px 18px;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.alert-success { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
+.alert-info { background-color: #d1ecf1; color: #0c5460; border-color: #bee5eb; }
+.alert-warning { background-color: #fff3cd; color: #856404; border-color: #ffeeba; }
+.alert-danger { background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+
+
+/* Form styling */
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; margin-bottom: .5rem; font-weight: 500; font-size: 0.9rem; }
+.form-control {
+    display: block;
+    width: 100%;
+    padding: .5rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--color-text-dark);
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.form-control:focus {
+    border-color: var(--color-primary-accent);
+    outline: 0;
+    box-shadow: 0 0 0 .2rem rgba(40, 167, 69, .25);
+}
+textarea.form-control { min-height: 120px; }
+
+/* Button styling */
+.btn {
+    display: inline-block;
+    font-weight: 500;
+    color: var(--color-text-dark);
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .5rem 1rem;
+    font-size: .95rem;
+    line-height: 1.5;
+    border-radius: var(--border-radius);
+    transition: all .15s ease-in-out;
+}
+.btn-primary { color: #fff; background-color: var(--color-primary-accent); border-color: var(--color-primary-accent); }
+.btn-primary:hover { background-color: var(--color-primary-accent-dark); border-color: var(--color-primary-accent-dark); }
+.btn-secondary { color: #fff; background-color: var(--color-text-muted); border-color: var(--color-text-muted); }
+.btn-secondary:hover { background-color: #5a6268; border-color: #545b62; }
+.btn-success { color: #fff; background-color: var(--color-primary-accent); border-color: var(--color-primary-accent); }
+.btn-success:hover { background-color: var(--color-primary-accent-dark); border-color: var(--color-primary-accent-dark); }
+.btn-danger { color: #fff; background-color: #e74c3c; border-color: #e74c3c; }
+.btn-danger:hover { background-color: #c0392b; border-color: #c0392b; }
+.btn-sm { padding: .25rem .5rem; font-size: .875rem; line-height: 1.5; }
+
+/* Table styling */
+table { width: 100%; margin-bottom: 1rem; background-color: #fff; border-collapse: collapse; }
+table th, table td { padding: .75rem; vertical-align: top; border-top: 1px solid var(--color-border); }
+table thead th { vertical-align: bottom; border-bottom: 2px solid var(--color-border); background-color: #e9ecef; font-weight: 500; }
+table tbody tr:nth-of-type(odd) { background-color: rgba(0,0,0,.02); }
+table tbody tr:hover { background-color: rgba(0,0,0,.05); }
+
+
+/* Style for mobile views */
+.sidebar-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--color-text-dark);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0 15px;
+}
+
+@media (max-width: 992px) {
+    .app-sidebar {
+        width: 0;
+        overflow: hidden;
+        padding: 0;
+    }
+    .app-sidebar.open {
+        width: var(--sidebar-width);
+        padding: 20px 0;
+    }
+    .app-main-content {
+        margin-left: 0;
+    }
+    .sidebar-toggle {
+        display: block;
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .app-header {
+         justify-content: center;
+         position:relative;
+    }
+    .header-user-info {
+        margin-left: auto;
+    }
+}

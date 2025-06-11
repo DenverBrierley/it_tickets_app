@@ -1,0 +1,44 @@
+{% extends "tickets/base.html" %}
+
+{% block page_title %}Ticket Details{% endblock %}
+
+{% block content %}
+    <h2>{{ ticket.title }} <span class="text-muted">(#{{ ticket.ticket_id }})</span></h2>
+
+    <div style="margin-bottom: 2rem; padding: 1rem; border: 1px solid var(--color-border); border-radius: var(--border-radius);">
+        <p><strong>Status:</strong> {{ ticket.status }}</p>
+        <p><strong>Severity:</strong> {{ ticket.severity }}</p>
+        <p><strong>Created by:</strong> {{ ticket.created_by.username|default:"N/A" }} at {{ ticket.created_at|date:"d M Y, H:i" }}</p>
+        <hr>
+        <p><strong>Description:</strong></p>
+        <p>{{ ticket.description|linebreaks }}</p>
+    </div>
+
+    <h3>Comments ({{ comments.count }})</h3>
+    <div class="comments-section" style="margin-bottom: 2rem;">
+        {% for comment in comments %}
+            <div class="comment-item" style="border: 1px solid #e9ecef; border-radius: var(--border-radius); padding: 1rem; margin-bottom: 1rem;">
+                <p>
+                    <strong>{{ comment.user.username|default:"Anonymous" }}</strong>
+                    <span class="text-muted" style="font-size: 0.85em;"> - {{ comment.created_at|timesince }} ago</span>
+                </p>
+                <div class="comment-text">
+                    {{ comment.text|linebreaksbr }}
+                </div>
+            </div>
+        {% empty %}
+            <p>No comments on this ticket yet.</p>
+        {% endfor %}
+    </div>
+
+    <div class="add-comment-form">
+        <h4>Add a Comment</h4>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ comment_form.text }}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Comment</button>
+        </form>
+    </div>
+{% endblock %}

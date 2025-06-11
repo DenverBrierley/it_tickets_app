@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Tickets App Homepage</title>
-</head>
-<body>
-    <h1>Home Test</h1>
-</body>
-</html>
+{% extends "tickets/base.html" %}
+
+{% block title %}Tickets App Homepage{% endblock %}
+
+{% block content %}
+    <h1>Welcome to ServiceLater</h1>
+    <p>Manage your IT support tickets!</p>
+    {% if not user.is_authenticated %}
+        <p>Please <a href="{% url 'login' %}">login</a> or <a href="{% url 'register' %}">register</a> to continue.</p>
+    {% endif %}
+{% endblock %}

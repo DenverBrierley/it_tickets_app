@@ -1,0 +1,95 @@
+{% load static %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ServiceLater{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'tickets/css/styles.css' %}">
+</head>
+<body>
+    <div class="app-wrapper">
+        <aside class="app-sidebar" id="appSidebar">
+            <div class="sidebar-header">
+                <h1 class="sidebar-logo"><a href="{% url 'home' %}">ServiceLater</a></h1> </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="{% url 'home' %}" {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %}>Home</a></li> {% if user.is_authenticated %}
+                        <li><a href="{% url 'ticket_list' %}" {% if request.resolver_match.url_name == 'ticket_list' or request.resolver_match.url_name == 'ticket_detail' %}class="active"{% endif %}>Tickets</a></li> <li><a href="{% url 'ticket_create' %}" {% if request.resolver_match.url_name == 'ticket_create' %}class="active"{% endif %}>Create New Ticket</a></li>
+
+                        {% if user.is_staff %}
+                        <li class="nav-separator"></li>
+                        <li><a href="/admin/" target="_blank">Admin Panel</a></li>
+                        {% endif %}
+
+                        <li class="nav-separator"></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}" {% if request.resolver_match.url_name == 'login' %}class="active"{% endif %}>Login</a></li>
+                        <li><a href="{% url 'register' %}" {% if request.resolver_match.url_name == 'register' %}class="active"{% endif %}>Register</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="app-main-content">
+            <header class="app-header">
+                 <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+                    &#9776; {/* Hamburger Icon */}
+                </button>
+                <div class="header-user-info">
+                    {% if user.is_authenticated %}
+                        <span>Welcome, <strong>{{ user.username }}</strong>!</span>
+                    {% else %}
+                        <span>Welcome, Guest!</span>
+                    {% endif %}
+                </div>
+            </header>
+
+            <main class="page-content">
+                {% if messages %}
+                <div class="messages-container">
+                    {% for message in messages %}
+                        {% with final_message_tag=message.tags|default:"info" %}
+                            {% if final_message_tag == "error" %}
+                                <div class="alert alert-danger">{{ message }}</div>
+                            {% else %}
+                                <div class="alert alert-{{ final_message_tag }}">{{ message }}</div>
+                            {% endif %}
+                        {% endwith %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <h1 class="page-title">{% block page_title %}{% endblock %}</h1>
+
+                {% block content %}
+                {% endblock %}
+            </main>
+
+            <footer class="app-footer">
+                <p>&copy; {% now "Y" %} Denver Brierley</p> </footer>
+        </div>
+    </div>
+
+    <script>
+        const sidebar = document.getElementById('appSidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+        }
+
+        document.addEventListener('click', function(event) {
+            if (window.innerWidth <= 992 && sidebar.classList.contains('open')) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggler = sidebarToggle ? sidebarToggle.contains(event.target) : false;
+                if (!isClickInsideSidebar && !isClickOnToggler) {
+                    sidebar.classList.remove('open');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
